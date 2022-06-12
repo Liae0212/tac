@@ -839,7 +839,7 @@ void ZapiszGrePlik(int tryb, int wygrana)
 	else {
 
 		struct HistoriaGier gra = ZapiszGre(tryb, wygrana);
-		if (licznikListy == 8) {
+		if (licznikListy == 6) {
 			fprintf(plik, "\n");
 			licznikListy = 0;
 		}
@@ -872,13 +872,15 @@ int main()
 	ALLEGRO_DISPLAY* display = NULL;
 	ALLEGRO_EVENT_QUEUE* event_queue = NULL;
 	ALLEGRO_TIMER* timer = NULL;
-	ALLEGRO_FONT* font18 = NULL;
 	ALLEGRO_BITMAP* image = NULL;
 	ALLEGRO_BITMAP* menu = NULL;
 	ALLEGRO_BITMAP* mod = NULL;
 	ALLEGRO_BITMAP* player = NULL;
 	ALLEGRO_BITMAP* com = NULL;
 	ALLEGRO_SAMPLE* click = NULL;
+	ALLEGRO_SAMPLE* win = NULL;
+	ALLEGRO_SAMPLE* los = NULL;
+
 	if (!al_init())
 		return -1;
 
@@ -906,8 +908,11 @@ int main()
 	ALLEGRO_FONT* font30 = al_load_font("arial.ttf", 30, 0);
 
 
-	al_reserve_samples(1);
+	al_reserve_samples(3);
 	click = al_load_sample("click.wav");
+	los = al_load_sample("los.wav");
+	win = al_load_sample("win.wav");
+	
 
 	al_set_target_bitmap(image);
 
@@ -967,6 +972,7 @@ int main()
 	int blok2 = 1;//blok e,d,c
 	int beg = 0;
 	int ruch = 0;
+	
 
 	resetBoard();
 
@@ -1016,7 +1022,6 @@ int main()
 					int f = 0;
 					int linijki = 0;
 					int koniec = 0;
-					//int start = 0;
 					FILE* plik;
 					errno_t err;
 					char tekst[100];
@@ -1027,15 +1032,15 @@ int main()
 						while (!feof(plik))
 						{
 							if (fgets(tekst, 100, plik) == NULL) break;
-							al_draw_text(font40, al_map_rgb(255, 255, 255), 550, 115 + f, 0, tekst);
-							f += 100;
+							al_draw_text(font40, al_map_rgb(255, 255, 255), 550, 150 + f, 0, tekst);
+							f += 130;
 							linijki++;
 							al_flip_display();
 
-							if (linijki == 15)
+							if (linijki == 6)
 								if (fgets(tekst, 100, plik) == NULL) koniec = 1;
 
-							if (linijki == 15 && koniec == 0)
+							if (linijki == 6 && koniec == 0)
 							{
 								al_rest(1.3);
 								al_draw_filled_rectangle(410, 80, 1295, 965, al_map_rgb(0, 0, 0));
@@ -1333,6 +1338,7 @@ int main()
 
 				if (ev.mouse.x > 400 && ev.mouse.x < 700 && ev.mouse.y > 70 && ev.mouse.y < 370)
 				{
+					al_play_sample(click, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, 0);
 					if (board[0][0] == ' ') {
 						x = 550;
 						y = 220;
@@ -1347,11 +1353,12 @@ int main()
 							ruch = 1;
 						}
 						wynik = checkWinner();
-						al_play_sample(click, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, 0);
+
 					}
 				}
 				if (ev.mouse.x > 700 && ev.mouse.x < 1000 && ev.mouse.y > 70 && ev.mouse.y < 370)
 				{
+					al_play_sample(click, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, 0);
 					if (board[0][1] == ' ') {
 						x = 850;
 						y = 220;
@@ -1366,11 +1373,12 @@ int main()
 							ruch = 1;
 						}
 						wynik = checkWinner();
-						al_play_sample(click, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, 0);
+
 					}
 				}
 				if (ev.mouse.x > 1000 && ev.mouse.x < 1300 && ev.mouse.y > 70 && ev.mouse.y < 370)
 				{
+					al_play_sample(click, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, 0);
 					if (board[0][2] == ' ') {
 						x = 1150;
 						y = 220;
@@ -1385,11 +1393,12 @@ int main()
 							ruch = 1;
 						}
 						wynik = checkWinner();
-						al_play_sample(click, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, 0);
+
 					}
 				}
 				if (ev.mouse.x > 400 && ev.mouse.x < 700 && ev.mouse.y > 370 && ev.mouse.y < 670)
 				{
+					al_play_sample(click, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, 0);
 					if (board[1][0] == ' ') {
 						x = 550;
 						y = 520;
@@ -1404,11 +1413,12 @@ int main()
 							ruch = 1;
 						}
 						wynik = checkWinner();
-						al_play_sample(click, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, 0);
+
 					}
 				}
 				if (ev.mouse.x > 700 && ev.mouse.x < 1000 && ev.mouse.y > 370 && ev.mouse.y < 670)
 				{
+					al_play_sample(click, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, 0);
 					if (board[1][1] == ' ') {
 						x = 850;
 						y = 520;
@@ -1423,11 +1433,12 @@ int main()
 							ruch = 1;
 						}
 						wynik = checkWinner();
-						al_play_sample(click, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, 0);
+
 					}
 				}
 				if (ev.mouse.x > 1000 && ev.mouse.x < 1300 && ev.mouse.y > 370 && ev.mouse.y < 670)
 				{
+					al_play_sample(click, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, 0);
 					if (board[1][2] == ' ') {
 						x = 1150;
 						y = 520;
@@ -1442,11 +1453,12 @@ int main()
 							ruch = 1;
 						}
 						wynik = checkWinner();
-						al_play_sample(click, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, 0);
+
 					}
 				}
 				if (ev.mouse.x > 400 && ev.mouse.x < 700 && ev.mouse.y > 670 && ev.mouse.y < 970)
 				{
+					al_play_sample(click, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, 0);
 					if (board[2][0] == ' ') {
 						x = 550;
 						y = 820;
@@ -1461,11 +1473,12 @@ int main()
 							ruch = 1;
 						}
 						wynik = checkWinner();
-						al_play_sample(click, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, 0);
+
 					}
 				}
 				if (ev.mouse.x > 700 && ev.mouse.x < 1000 && ev.mouse.y > 670 && ev.mouse.y < 970)
 				{
+					al_play_sample(click, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, 0);
 					if (board[2][1] == ' ') {
 						x = 850;
 						y = 820;
@@ -1480,11 +1493,12 @@ int main()
 							ruch = 1;
 						}
 						wynik = checkWinner();
-						al_play_sample(click, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, 0);
+
 					}
 				}
 				if (ev.mouse.x > 1000 && ev.mouse.x < 1300 && ev.mouse.y > 670 && ev.mouse.y < 970)
 				{
+					al_play_sample(click, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, 0);
 					if (board[2][2] == ' ') {
 						x = 1150;
 						y = 820;
@@ -1499,7 +1513,7 @@ int main()
 							ruch = 1;
 						}
 						wynik = checkWinner();
-						al_play_sample(click, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, 0);
+
 					}
 				}
 			}
@@ -1515,28 +1529,34 @@ int main()
 		}
 
 		if (wynik != 0) {
-
 			if (mode == 1) {
 				if (wynik == 2)
 					al_draw_text(font80, al_map_rgb(255, 255, 255), 550, 475, 0, "O PLAYER WINS!");
 				if (wynik == 1)
 					al_draw_text(font80, al_map_rgb(255, 255, 255), 550, 475, 0, "X PLAYER WINS!");
+				al_play_sample(win, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, 0);
 			}
 			else if (mode == 3 || mode == 4 || mode == 5) {
-				if (wynik == 2)
+				if (wynik == 2) {
 					al_draw_text(font80, al_map_rgb(255, 255, 255), 700, 475, 0, "YOU LOSE!");
-				if (wynik == 1)
+					al_play_sample(los, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, 0);
+				}
+				if (wynik == 1) {
 					al_draw_text(font80, al_map_rgb(255, 255, 255), 700, 475, 0, "YOU WIN!");
+					al_play_sample(win, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, 0);
+				}
 				ZapiszGrePlik(mode, wynik);
 			}
 			blok1 = 0;
 			mode = 0;
 			wzor = 2;
-			//wynik = 0;
 		}
 
 		if (checkFreeSpaces() == 0 && wynik == 0) {
+			
 			al_draw_text(font80, al_map_rgb(255, 255, 255), 700, 475, 0, "DRAW!");
+			
+			
 			if (mode > 2)
 				ZapiszGrePlik(mode, wynik);
 			blok1 = 0;
@@ -1544,7 +1564,7 @@ int main()
 			wzor = 2;
 
 		}
-
+		
 
 
 		al_flip_display();
@@ -1553,7 +1573,9 @@ int main()
 	}
 	al_destroy_event_queue(event_queue);
 	al_destroy_timer(timer);
-	al_destroy_font(font18);
+	al_destroy_font(font80);
+	al_destroy_font(font30);
+	al_destroy_font(font40);
 	al_destroy_display(display);
 	al_destroy_bitmap(image);
 	al_destroy_bitmap(menu);
@@ -1563,6 +1585,9 @@ int main()
 	al_uninstall_keyboard();
 	al_uninstall_mouse();
 	al_destroy_sample(click);
+	al_destroy_sample(win);
+	al_destroy_sample(los);
+	
 
 
 
